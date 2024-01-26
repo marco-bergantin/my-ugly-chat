@@ -1,4 +1,4 @@
-﻿namespace Auth0Mvc.Messages;
+﻿namespace MyUglyChat.Messages;
 
 public class ClientDisconnectedEvent : IEvent
 {

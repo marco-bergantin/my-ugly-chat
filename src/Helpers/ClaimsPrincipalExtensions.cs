@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Auth0Mvc.Helpers;
+namespace MyUglyChat.Helpers;
 
 public static class ClaimsPrincipalExtensions
 {

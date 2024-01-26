@@ -1,4 +1,4 @@
-﻿namespace Auth0Mvc.Startup;
+﻿namespace MyUglyChat.Startup;
 
 public static class ServiceBusExtensions
 {

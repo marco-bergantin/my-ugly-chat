@@ -1,7 +1,7 @@
 using Auth0.AspNetCore.Authentication;
-using Auth0Mvc.Hubs;
-using Auth0Mvc.Services;
-using Auth0Mvc.Startup;
+using MyUglyChat.Hubs;
+using MyUglyChat.Services;
+using MyUglyChat.Startup;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);

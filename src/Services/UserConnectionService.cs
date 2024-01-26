@@ -1,7 +1,7 @@
-﻿using Auth0Mvc.DAL;
+﻿using MyUglyChat.DAL;
 using MongoDB.Driver;
 
-namespace Auth0Mvc.Services;
+namespace MyUglyChat.Services;
 
 public class UserConnectionService(IMongoDatabase database)
 {

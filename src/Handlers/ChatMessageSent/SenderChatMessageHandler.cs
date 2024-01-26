@@ -1,10 +1,10 @@
-﻿using Auth0Mvc.Hubs;
-using Auth0Mvc.Messages;
-using Auth0Mvc.Models;
-using Auth0Mvc.Services;
+﻿using MyUglyChat.Hubs;
+using MyUglyChat.Messages;
+using MyUglyChat.Models;
+using MyUglyChat.Services;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Auth0Mvc.Handlers.ChatMessageSent;
+namespace MyUglyChat.Handlers.ChatMessageSent;
 
 public class SenderChatMessageHandler(IHubContext<ChatHub> hubContext, UserConnectionService userConnectionService) :
     IHandleMessages<ChatMessageSentEvent>

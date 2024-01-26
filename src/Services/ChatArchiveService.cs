@@ -1,9 +1,9 @@
-﻿using Auth0Mvc.DAL;
+﻿using MyUglyChat.DAL;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
-namespace Auth0Mvc.Services;
+namespace MyUglyChat.Services;
 
 public class ChatArchiveService(IMongoDatabase database)
 {

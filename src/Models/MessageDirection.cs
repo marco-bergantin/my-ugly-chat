@@ -1,4 +1,4 @@
-﻿namespace Auth0Mvc.Models;
+﻿namespace MyUglyChat.Models;
 
 public enum MessageDirection
 {

@@ -1,8 +1,8 @@
-﻿using Auth0Mvc.DAL;
-using Auth0Mvc.Messages;
-using Auth0Mvc.Services;
+﻿using MyUglyChat.DAL;
+using MyUglyChat.Messages;
+using MyUglyChat.Services;
 
-namespace Auth0Mvc.Handlers.ChatMessageSent;
+namespace MyUglyChat.Handlers.ChatMessageSent;
 
 public class RecentMessagesHandler(RecentChatsService recentChatService) : IHandleMessages<ChatMessageSentEvent>
 {

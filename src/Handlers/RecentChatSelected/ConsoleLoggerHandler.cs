@@ -1,6 +1,6 @@
-﻿using Auth0Mvc.Messages;
+﻿using MyUglyChat.Messages;
 
-namespace Auth0Mvc.Handlers.RecentChatSelected;
+namespace MyUglyChat.Handlers.RecentChatSelected;
 
 public class ConsoleLoggerHandler : IHandleMessages<RecentChatSelectedEvent>
 {

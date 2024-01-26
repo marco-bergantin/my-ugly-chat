@@ -1,9 +1,9 @@
-﻿using Auth0Mvc.DAL;
-using Auth0Mvc.Services;
+﻿using MyUglyChat.DAL;
+using MyUglyChat.Services;
 using Microsoft.AspNetCore.Mvc;
-using Auth0Mvc.Helpers;
+using MyUglyChat.Helpers;
 
-namespace Auth0Mvc.Controllers;
+namespace MyUglyChat.Controllers;
 
 public class CreateContactController(ContactsService contactsService) : Controller
 {

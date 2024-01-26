@@ -1,11 +1,12 @@
-﻿using Auth0Mvc.Helpers;
-using Auth0Mvc.Messages;
-using Auth0Mvc.Models;
-using Auth0Mvc.Services;
+﻿using MyUglyChat.Helpers;
+using MyUglyChat.Messages;
+using MyUglyChat.Models;
+using MyUglyChat.Services;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Auth0Mvc.Hubs;
+namespace MyUglyChat.Hubs;
+
 public class ChatHub(IMessageSession messageSession, 
     ContactsService contactsService,
     ChatArchiveService chatArchiveService) : Hub

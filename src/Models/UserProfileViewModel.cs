@@ -1,4 +1,4 @@
-namespace Auth0Mvc.ViewModels;
+namespace MyUglyChat.ViewModels;
 
 public class UserProfileViewModel
 {

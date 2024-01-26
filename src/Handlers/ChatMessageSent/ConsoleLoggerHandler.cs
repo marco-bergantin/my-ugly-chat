@@ -1,6 +1,6 @@
-﻿using Auth0Mvc.Messages;
+﻿using MyUglyChat.Messages;
 
-namespace Auth0Mvc.Handlers.ChatMessageSent;
+namespace MyUglyChat.Handlers.ChatMessageSent;
 
 public class ConsoleLoggerHandler : IHandleMessages<ChatMessageSentEvent>
 {

@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace Auth0Mvc.DAL;
+namespace MyUglyChat.DAL;
 
 public class ContactList
 {

@@ -1,7 +1,7 @@
-﻿using Auth0Mvc.Messages;
-using Auth0Mvc.Services;
+﻿using MyUglyChat.Messages;
+using MyUglyChat.Services;
 
-namespace Auth0Mvc.Handlers.ClientConnectionEvents;
+namespace MyUglyChat.Handlers.ClientConnectionEvents;
 
 public class UserConnectionHandler(UserConnectionService userConnectionService) : IHandleMessages<ClientConnectedEvent>,
     IHandleMessages<ClientDisconnectedEvent>

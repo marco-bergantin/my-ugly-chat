@@ -1,10 +1,10 @@
-﻿using Auth0Mvc.Helpers;
-using Auth0Mvc.Models;
+﻿using MyUglyChat.Helpers;
+using MyUglyChat.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Auth0Mvc.Controllers;
+namespace MyUglyChat.Controllers;
 
 public class HomeController(ILogger<HomeController> logger) : Controller
 {
