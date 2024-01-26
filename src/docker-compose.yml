@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+
+  mongo:
+    image: mongo:6.0.13
+    ports:
+      - 27017:27017
+    volumes:
+        - mongo_data:/home/mongo/data
+    restart: always
+    env_file:
+    - .env
+
+  mongo-express:
+    image: mongo-express:1.0.2-20-alpine3.19
+    restart: always
+    ports:
+      - 8081:8081
+    env_file:
+    - .env
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    env_file:
+    - .env
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+
+  cache:
+    image: redis:7.2.4
+    restart: always
+    ports:
+      - 6379:6379
+    env_file:
+    - .env
+
+volumes:
+  mongo_data:
+        

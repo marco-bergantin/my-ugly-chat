@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+
+    <div class="sidebar" id="recent-contacts">
+    </div>
+
+    <div class="main" id="main-container">
+        <div class="row p-1">
+            <div class="input">
+                <input type="text" id="messageInput" minlength="1" maxlength="140" style="float:left; width:90%;" />
+                <input type="button" id="sendButton" value="Send" style="float:right width:10%;" />
+            </div>
+        </div>
+        <div class="chat-box" id="chatBox">
+            <div id="chat-messages">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>

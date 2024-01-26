@@ -1,0 +1,93 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.message-container {
+    height: fit-content;
+    width: 100%;
+    padding: 5px;
+    float: left;
+}
+
+.sent {
+    position: relative;
+    float: right;
+    width: fit-content;
+    border-radius: 5px 0px 5px 5px;
+    background: #e1ffc7;
+    padding: 8px;
+    word-wrap: break-word;
+    max-width: 85%;
+}
+
+.received {
+    position: relative;
+    width: fit-content;
+    border-radius: 0px 5px 5px 5px;
+    background: #eceff1;
+    padding: 8px;
+    word-wrap: break-word;
+    max-width: 85%;
+}
+
+.timestamp {
+    font-size: 0.5em;
+    font-style: italic;
+}
+
+.sidebar {
+    width: 25%;
+    height: 100%;
+    float: left;
+}
+
+.main {
+    float: left;
+    width: 70%;
+    height: 100%;
+    padding-left: 10px;
+}
+
+.contact {
+    border-style: groove;
+    border-width: 1px;
+    border-color: dimgray;
+    border-radius: 5px;
+}
+
+.selected-contact {
+    border-style: groove;
+    border-width: 2px;
+    border-color: darkslategrey;
+    border-radius: 5px;
+}
+
+.chat-box {
+    height: 75vh;
+    flex: 0 0 auto;
+    width: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-anchor: auto !important;
+}
+
+.input {
+    width: 100%;
+    height: fit-content;
+}
