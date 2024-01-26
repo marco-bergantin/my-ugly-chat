@@ -187,9 +187,10 @@ connection.on("FinishedLoading", function (paramsObject) {
         var chatBox = document.getElementById("chatBox");
 
         // add hidden input to flag that there's no more data
-        var beginning = document.createElement("input");
-        beginning.type = "hidden";
+        var beginning = document.createElement("div");
         beginning.id = "begin";
+        beginning.className = "system-msg";
+        beginning.textContent = "CHAT BEGIN";
         chatBox.appendChild(beginning);
     }
 });

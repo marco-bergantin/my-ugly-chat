@@ -50,6 +50,19 @@ body {
     font-style: italic;
 }
 
+.system-msg {
+    font-size: 0.5em;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    border-radius: 5px 5px 5px 5px;
+    background: #5e5e5e;
+    color: #ffffff;
+    padding: 6px;
+    max-width: 20%;
+}
+
 .sidebar {
     width: 25%;
     height: 100%;
