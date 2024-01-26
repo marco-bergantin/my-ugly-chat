@@ -53,13 +53,7 @@ connection.on("ReceiveMessage", function (messageViewModel) {
 });
 
 function addMessage(messageViewModel) {
-    var chatMessages = document.getElementById("chat-messages");
-    if (!chatMessages) {
-        var chatBox = document.getElementById("chatBox");
-        chatMessages = document.createElement("div");
-        chatMessages.id = "chat-messages";
-        chatBox.appendChild(chatMessages);
-    }
+    var chatMessages = getOrAddChatMessages();
 
     var messageContainer = document.createElement("div");
     messageContainer.className = "message-container";
@@ -70,17 +64,69 @@ function addMessage(messageViewModel) {
     messageContainer.appendChild(messageElement);
 
     var timestampElement = document.createElement("div");
+    var dateNewMessage = new Date(messageViewModel.timestamp);
     timestampElement.dataset.ticks = messageViewModel.timestamp;
-    timestampElement.textContent = (new Date(messageViewModel.timestamp)).toLocaleString();
+    timestampElement.textContent = dateNewMessage.toLocaleString();
     timestampElement.className = "timestamp"
     messageElement.appendChild(timestampElement);
 
     if (messageViewModel.fromArchive) { // add to top
         var firstMessage = chatMessages.firstChild;
+        if (firstMessage && !firstMessage.firstChild.id.startsWith('date')) {
+
+            var firstMessageTimestamp = firstMessage.firstChild.lastChild.dataset.ticks;
+            var datePreviousMessage = new Date(Number(firstMessageTimestamp));
+            if (datePreviousMessage.getDate() !== dateNewMessage.getDate()) {
+                addDateSystemNote(dateNewMessage, false);
+            }
+        }
+
         chatMessages.insertBefore(messageContainer, firstMessage);
     }
     else { // append to bottom
+        var lastMessage = chatMessages.lastChild;
+        if (lastMessage && !lastMessage.firstChild.id.startsWith('date')) {
+            var lastMessageTimestamp = lastMessage.firstChild.lastChild.dataset.ticks;
+            var datePreviousMessage = new Date(Number(lastMessageTimestamp));
+            if (datePreviousMessage.getDate() !== dateNewMessage.getDate()) {
+                addDateSystemNote(dateNewMessage, true);
+            }
+        }
+
         chatMessages.appendChild(messageContainer);
+    }
+}
+
+function getOrAddChatMessages() {
+    var chatMessages = document.getElementById("chat-messages");
+    if (!chatMessages) {
+        var chatBox = document.getElementById("chatBox");
+        chatMessages = document.createElement("div");
+        chatMessages.id = "chat-messages";
+        chatBox.appendChild(chatMessages);
+    }
+    return chatMessages;
+}
+
+function addDateSystemNote(date, append) {
+    var chatBox = document.getElementById("chatBox");
+
+    var messageContainer = document.createElement("div");
+    messageContainer.className = "message-container";
+
+    var dateElement = document.createElement("div");
+    dateElement.id = "date" + date.toLocaleDateString();
+    dateElement.className = "system-msg";
+    dateElement.textContent = date.toLocaleDateString();
+
+    messageContainer.appendChild(dateElement);
+
+    if (append) {
+        chatBox.appendChild(messageContainer);
+    }
+    else { // prepend
+        var chatMessages = document.getElementById("chat-messages");
+        chatMessages.insertBefore(messageContainer, chatMessages.firstChild);
     }
 }
 
@@ -184,13 +230,18 @@ connection.on("FinishedLoading", function (paramsObject) {
     window.isLoading = false;
 
     if (!paramsObject.moreData) {
-        var chatBox = document.getElementById("chatBox");
+        var chatMessages = getOrAddChatMessages();
 
-        // add hidden input to flag that there's no more data
+        var messageContainer = document.createElement("div");
+        messageContainer.className = "message-container";
+
+        // flag that there's no more data
         var beginning = document.createElement("div");
         beginning.id = "begin";
         beginning.className = "system-msg";
         beginning.textContent = "CHAT BEGIN";
-        chatBox.appendChild(beginning);
+
+        messageContainer.appendChild(beginning);
+        chatMessages.insertBefore(messageContainer, chatMessages.firstChild);
     }
 });
