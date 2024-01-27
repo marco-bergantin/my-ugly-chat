@@ -54,7 +54,11 @@ connection.on("ReceiveMessage", function (messageViewModel) {
 
 function addMessage(messageViewModel) {
     var chatMessages = getOrAddChatMessages();
+    var messageContainer = createMessageContainer(messageViewModel);
+    addToMessageList(chatMessages, messageContainer, messageViewModel);
+}
 
+function createMessageContainer(messageViewModel) {
     var messageContainer = document.createElement("div");
     messageContainer.className = "message-container";
 
@@ -66,18 +70,22 @@ function addMessage(messageViewModel) {
     var timestampElement = document.createElement("div");
     var dateNewMessage = new Date(messageViewModel.timestamp);
     timestampElement.dataset.ticks = messageViewModel.timestamp;
-    timestampElement.textContent = dateNewMessage.toLocaleString();
+    timestampElement.textContent = dateNewMessage.toLocaleTimeString();
     timestampElement.className = "timestamp"
     messageElement.appendChild(timestampElement);
 
+    return messageContainer;
+}
+
+function addToMessageList(chatMessages, messageContainer, messageViewModel) {
+    var dateNewMessage = new Date(messageViewModel.timestamp);
     if (messageViewModel.fromArchive) { // add to top
         var firstMessage = chatMessages.firstChild;
         if (firstMessage && !firstMessage.firstChild.id.startsWith('date')) {
-
             var firstMessageTimestamp = firstMessage.firstChild.lastChild.dataset.ticks;
             var datePreviousMessage = new Date(Number(firstMessageTimestamp));
             if (datePreviousMessage.getDate() !== dateNewMessage.getDate()) {
-                addDateSystemNote(dateNewMessage, false);
+                firstMessage = addDateSystemNote(datePreviousMessage, false);
             }
         }
 
@@ -109,7 +117,7 @@ function getOrAddChatMessages() {
 }
 
 function addDateSystemNote(date, append) {
-    var chatBox = document.getElementById("chatBox");
+    var chatMessages = document.getElementById("chat-messages");
 
     var messageContainer = document.createElement("div");
     messageContainer.className = "message-container";
@@ -122,12 +130,13 @@ function addDateSystemNote(date, append) {
     messageContainer.appendChild(dateElement);
 
     if (append) {
-        chatBox.appendChild(messageContainer);
+        chatMessages.appendChild(messageContainer);
     }
     else { // prepend
-        var chatMessages = document.getElementById("chat-messages");
         chatMessages.insertBefore(messageContainer, chatMessages.firstChild);
     }
+
+    return messageContainer;
 }
 
 function getMessageClassName(messageViewModel) {
