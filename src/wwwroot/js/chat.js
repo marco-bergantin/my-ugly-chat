@@ -1,27 +1,5 @@
 ﻿"use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
-
-//Disable the send button until connection is established.
-document.getElementById("sendButton").disabled = true;
-
-connection.start().then(function () {
-    document.getElementById("sendButton").disabled = false;
-}).catch(function (err) {
-    return console.error(err.toString());
-});
-
-document.getElementById("sendButton").addEventListener("click", function (event) {
-    sendMessage(event);
-});
-
-document.getElementById("messageInput").addEventListener("keydown", (event) => {
-    if (event.isComposing || event.key !== "Enter") {
-        return;
-    }
-    sendMessage(event);
-});
-
 function sendMessage(event) {
     var selectedContactElement = document.getElementById("selected-contact");
     var selectedContact = selectedContactElement.value;
@@ -44,13 +22,6 @@ function sendMessage(event) {
         messageBox.value = "";
     }
 }
-
-connection.on("ReceiveMessage", function (messageViewModel) {
-    var selectedContact = document.getElementById("selected-contact").value;
-    if (selectedContact == messageViewModel.chatId) {
-        addMessage(messageViewModel);
-    }
-});
 
 function addMessage(messageViewModel) {
     var chatMessages = getOrAddChatMessages();
@@ -140,113 +111,3 @@ function getMessageClassName(messageViewModel) {
         ? "sent"
         : "received";
 }
-
-connection.on("RefreshRecentContacts", function (recentContactsViewModel) {
-    var recentContactsElement = document.getElementById("recent-contacts");
-    recentContactsElement.innerHTML = "";
-    for (const contact of recentContactsViewModel.contacts) {
-        var contactElement = document.createElement("div");
-        contactElement.textContent = contact.displayName;
-        contactElement.className = "contact";
-        contactElement.id = contact.chatId;
-        contactElement.dataset.contactid = contact.userId;
-        contactElement.onclick = function () {
-            var recentContactsElement = document.getElementById("recent-contacts");
-            for (const child of recentContactsElement.childNodes) {
-                child.className = "contact";
-            }
-            this.className = "selected-contact";
-            selectedContactChanged(this);
-        };
-        recentContactsElement.appendChild(contactElement);
-    }   
-});
-
-function selectedContactChanged(contactElement) {
-    var chatId = contactElement.id;
-    var userId = contactElement.dataset.contactid;
-    var chatBox = document.getElementById("chatBox");
-    chatBox.innerHTML = "";
-    if (chatId) {
-        connection.invoke("GetRecentChat", chatId).catch(function (err) {
-            return console.error(err.toString());
-        });
-
-        var selectedContactElement = document.getElementById("selected-contact");
-        if (!selectedContactElement) {
-            var selectedContactElement = document.createElement("input");
-            selectedContactElement.type = "hidden";
-            selectedContactElement.id = "selected-contact";
-            chatBox.appendChild(selectedContactElement);
-        }
-
-        selectedContactElement.value = chatId;
-        selectedContactElement.dataset.contactid = userId;
-
-        lastScrollPosition = 0;
-    }
-}  
-
-var lastScrollPosition = 0;
-document.getElementById("chatBox").addEventListener('scroll', () => {
-    if (window.isLoading) { // already loading data, do nothing
-        return;
-    }
-
-    var chatBox = document.getElementById("chatBox");
-    const {
-        scrollTop, // is a negative number
-        scrollHeight,
-        clientHeight
-    } = chatBox;
-
-    var isScrollingUp = lastScrollPosition > scrollTop;
-    lastScrollPosition = scrollTop;
-    if (!isScrollingUp) { // do nothing
-        return;
-    }
-
-    var beginning = document.getElementById("begin");
-    if (beginning) { // already received all data
-        return;
-    }
-
-    var scrollValue = scrollTop + scrollHeight; // is equal to clientHeight when scrolled all the way to the top
-    if (scrollValue <= clientHeight * 1.005) { // if at the top (scrollValue gets smaller as you scroll higher up)
-        var chatMessages = document.getElementById("chat-messages");
-        var firstMessage = chatMessages.firstChild;
-        var messageElement = firstMessage.firstChild;
-        var timestampElement = messageElement.lastChild;
-
-        var timestamp = parseInt(timestampElement.dataset.ticks);
-        var chatId = document.getElementById("selected-contact").value;
-
-        window.isLoading = true;
-
-        connection.invoke("GetMoreMessages", chatId, timestamp).catch(function (err) {
-            return console.error(err.toString());
-        });
-    }
-}, {
-    passive: true
-});
-
-connection.on("FinishedLoading", function (paramsObject) {
-    window.isLoading = false;
-
-    if (!paramsObject.moreData) {
-        var chatMessages = getOrAddChatMessages();
-
-        var messageContainer = document.createElement("div");
-        messageContainer.className = "message-container";
-
-        // flag that there's no more data
-        var beginning = document.createElement("div");
-        beginning.id = "begin";
-        beginning.className = "system-msg";
-        beginning.textContent = "CHAT BEGIN";
-
-        messageContainer.appendChild(beginning);
-        chatMessages.insertBefore(messageContainer, chatMessages.firstChild);
-    }
-});
