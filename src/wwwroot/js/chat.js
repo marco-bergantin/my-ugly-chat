@@ -80,29 +80,25 @@ function createMessageContainer(messageViewModel) {
 function addToMessageList(chatMessages, messageContainer, messageViewModel) {
     var dateNewMessage = new Date(messageViewModel.timestamp);
     if (messageViewModel.fromArchive) { // add to top
-        var firstMessage = chatMessages.firstChild;
-        if (firstMessage && !firstMessage.firstChild.id.startsWith('date')) {
-            var firstMessageTimestamp = firstMessage.firstChild.lastChild.dataset.ticks;
-            var datePreviousMessage = new Date(Number(firstMessageTimestamp));
-            if (datePreviousMessage.getDate() !== dateNewMessage.getDate()) {
-                firstMessage = addDateSystemNote(datePreviousMessage, false);
-            }
-        }
-
+        var firstMessage = handleMessageAndTimestamp(chatMessages.firstChild, dateNewMessage, false);
         chatMessages.insertBefore(messageContainer, firstMessage);
     }
     else { // append to bottom
-        var lastMessage = chatMessages.lastChild;
-        if (lastMessage && !lastMessage.firstChild.id.startsWith('date')) {
-            var lastMessageTimestamp = lastMessage.firstChild.lastChild.dataset.ticks;
-            var datePreviousMessage = new Date(Number(lastMessageTimestamp));
-            if (datePreviousMessage.getDate() !== dateNewMessage.getDate()) {
-                addDateSystemNote(dateNewMessage, true);
-            }
-        }
-
+        handleMessageAndTimestamp(chatMessages.lastChild, dateNewMessage, true);
         chatMessages.appendChild(messageContainer);
     }
+}
+
+function handleMessageAndTimestamp(siblingMessage, dateNewMessage, append) {
+    if (siblingMessage && !siblingMessage.firstChild.id.startsWith('date')) {
+        var siblingTimestamp = siblingMessage.firstChild.lastChild.dataset.ticks;
+        var siblingDate = new Date(Number(siblingTimestamp));
+        if (siblingDate.getDate() !== dateNewMessage.getDate()) {
+            return addDateSystemNote(siblingDate, append);
+        }
+    }
+
+    return siblingMessage;
 }
 
 function getOrAddChatMessages() {
