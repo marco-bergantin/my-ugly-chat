@@ -8,6 +8,8 @@ var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
 
+builder.InstallOpenTelemetryTracing(config);
+
 builder.Services.InstallSignalR(config);
 builder.Services.InstallAuth0(config);
 

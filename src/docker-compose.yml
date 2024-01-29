@@ -40,6 +40,25 @@ services:
     env_file:
     - .env
 
+  otel-collector:
+    image: otel/opentelemetry-collector:0.93.0
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./Scripts/otel.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - 8888:8888
+      - 8889:8889 
+      - 13133:13133
+      - 4317:4317
+  
+  prometheus:
+    image: bitnami/prometheus:2.49.1
+    volumes:
+      - ./Scripts/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml
+    ports:
+      - 9090:9090
+
 volumes:
   mongo_data:
+  grafana-storage: {}  
         
