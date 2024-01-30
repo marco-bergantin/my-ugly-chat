@@ -65,6 +65,8 @@ function isAlreadyAdded(chatMessages, messageViewModel, messagesToCheck) {
         }
         node = node.previousSibling;
     }
+
+    return false;
 }
 
 function createMessageContainer(messageViewModel) {
