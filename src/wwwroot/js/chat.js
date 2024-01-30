@@ -65,7 +65,8 @@ function handleMessageAndTimestamp(siblingMessage, dateNewMessage, append) {
         var siblingTimestamp = siblingMessage.firstChild.lastChild.dataset.ticks;
         var siblingDate = new Date(Number(siblingTimestamp));
         if (siblingDate.getDate() !== dateNewMessage.getDate()) {
-            return addDateSystemNote(siblingDate, append);
+            return addDateSystemNote(append ? dateNewMessage : siblingDate,
+                append);
         }
     }
 

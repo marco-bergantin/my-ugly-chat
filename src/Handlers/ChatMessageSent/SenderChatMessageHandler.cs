@@ -16,9 +16,9 @@ public class SenderChatMessageHandler(IHubContext<ChatHub> hubContext, UserConne
     public async Task Handle(ChatMessageSentEvent message, IMessageHandlerContext context)
     {
         var recipientConnectionIds = await _userConnectionService.GetConnectionIdsAsync(message.From);
-        if (recipientConnectionIds is null || recipientConnectionIds.Length == 0)
+        if (recipientConnectionIds is null || recipientConnectionIds.Length <= 1)
         {
-            // log warning? no record of a connection for sender
+            // if no connection found for user or not more than 1, no need to relay the message
             return;
         }
 

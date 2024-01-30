@@ -7,6 +7,7 @@ document.getElementById("sendButton").disabled = true;
 
 connection.start().then(function () {
     document.getElementById("sendButton").disabled = false;
+    connection.invoke("GetRecentContacts");
 }).catch(function (err) {
     return console.error(err.toString());
 });
