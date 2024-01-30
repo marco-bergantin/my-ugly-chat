@@ -30,8 +30,10 @@ public class RecipientChatMessageHandler(IHubContext<ChatHub> hubContext, UserCo
                 return;
             }
 
+            // idempotency handled in front end in this case, see isAlreadyAdded in chat.js
             await hubClient.SendAsync("ReceiveMessage", new ChatMessageViewModel
             {
+                MessageId = message.Id,
                 User = message.From,
                 ChatId = message.ChatId,
                 Content = message.Content,

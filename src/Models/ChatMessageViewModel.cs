@@ -4,6 +4,7 @@ namespace MyUglyChat.Models;
 
 public class ChatMessageViewModel
 {
+    public required Guid MessageId { get; init; }
     public required string User { get; init; }
     public required string ChatId { get; init; }
     public required string Content { get; init; }
@@ -13,6 +14,7 @@ public class ChatMessageViewModel
 
     public static ChatMessageViewModel FromChatMessage(ChatMessage chatMessage, string chatId, string userId) => new()
     {
+        MessageId = chatMessage.Id,
         User = chatMessage.From,
         Content = chatMessage.Content,
         ChatId = chatId,

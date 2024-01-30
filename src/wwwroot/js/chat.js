@@ -23,15 +23,54 @@ function sendMessage(event) {
     }
 }
 
+const messagesPageSize = 25;
 function addMessage(messageViewModel) {
     var chatMessages = getOrAddChatMessages();
+
+    if (isAlreadyAdded(chatMessages, messageViewModel, messagesPageSize)) {
+        return;
+    }
+
     var messageContainer = createMessageContainer(messageViewModel);
     addToMessageList(chatMessages, messageContainer, messageViewModel);
+}
+
+function getOrAddChatMessages() {
+    var chatMessages = document.getElementById("chat-messages");
+    if (!chatMessages) {
+        var chatBox = document.getElementById("chatBox");
+        chatMessages = document.createElement("div");
+        chatMessages.id = "chat-messages";
+        chatBox.appendChild(chatMessages);
+    }
+    return chatMessages;
+}
+
+function isAlreadyAdded(chatMessages, messageViewModel, messagesToCheck) {
+    if (messageViewModel.fromArchive) {
+        // assume messages from archive are unique (handled by backend)
+        return false;
+    }
+
+    var node = chatMessages.lastChild;
+    var messagesChecked = 0;
+
+    while (node && messagesChecked < messagesToCheck) {
+        if (node.id.startsWith('msg')) {
+            var existingMessageId = node.id.substring(3);
+            if (existingMessageId === messageViewModel.messageId) {
+                return true;
+            }
+            messagesChecked++;
+        }
+        node = node.previousSibling;
+    }
 }
 
 function createMessageContainer(messageViewModel) {
     var messageContainer = document.createElement("div");
     messageContainer.className = "message-container";
+    messageContainer.id = `msg${messageViewModel.messageId}`;
 
     var messageElement = document.createElement("div");
     messageElement.textContent = messageViewModel.content;
@@ -71,17 +110,6 @@ function handleMessageAndTimestamp(siblingMessage, dateNewMessage, append) {
     }
 
     return siblingMessage;
-}
-
-function getOrAddChatMessages() {
-    var chatMessages = document.getElementById("chat-messages");
-    if (!chatMessages) {
-        var chatBox = document.getElementById("chatBox");
-        chatMessages = document.createElement("div");
-        chatMessages.id = "chat-messages";
-        chatBox.appendChild(chatMessages);
-    }
-    return chatMessages;
 }
 
 function addDateSystemNote(date, append) {
