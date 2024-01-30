@@ -29,7 +29,7 @@ public class ChatArchiveService(IMongoDatabase database)
     public async Task ArchiveMessageAsync(string chatId, ChatMessage message)
     {
         await _chatArchiveCollection.UpdateOneAsync(c => c.ChatId == chatId,
-            Builders<Chat>.Update.AddToSet(m => m.Messages, message),
+            Builders<Chat>.Update.AddToSet(m => m.Messages, message), // AddToSet guarantees uniqueness in the Messages array
             new UpdateOptions { IsUpsert = true });
     }
 }

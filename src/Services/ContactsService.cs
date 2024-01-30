@@ -7,19 +7,21 @@ public class ContactsService(IMongoDatabase database)
 {
     private readonly IMongoCollection<ContactList> _contactListsCollection = database.GetCollection<ContactList>("contact-lists");
 
-    public async Task<bool> AddContactToListAsync(string ownerId, Contact newContact)
+    public async Task AddContactToListAsync(string ownerId, Contact newContact)
     {
         if (string.IsNullOrWhiteSpace(ownerId))
+        {
             throw new ArgumentNullException(nameof(ownerId));
+        }
 
         if (newContact is null || string.IsNullOrWhiteSpace(newContact.UserId))
+        {
             throw new ArgumentException(nameof(newContact));
+        }
 
-        var updateResult = await _contactListsCollection.UpdateOneAsync(c => c.OwnerId == ownerId,
+        _ = await _contactListsCollection.UpdateOneAsync(c => c.OwnerId == ownerId,
             Builders<ContactList>.Update.AddToSet(p => p.Contacts, newContact),
             new UpdateOptions { IsUpsert = true });
-
-        return updateResult.ModifiedCount == 1; // TODO: this is 0 on upsert (new record)
     }
 
     public async Task<ContactList> GetContactsAsync(string ownerId)
@@ -35,6 +37,6 @@ public class ContactsService(IMongoDatabase database)
 
         var update = Builders<ContactList>.Update.Set("Contacts.$.TimestampLatestMessage", timestamp);
 
-        _ = await _contactListsCollection.UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+        _ = await _contactListsCollection.UpdateOneAsync(filter, update);
     }
 }
