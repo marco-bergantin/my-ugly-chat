@@ -15,12 +15,12 @@ public static class OpenTelemetryInstaller
         }
 
         builder.Services.AddOpenTelemetry()
-            .ConfigureResource(resource => resource
-            .AddService(serviceName: builder.Environment.ApplicationName))
+            .ConfigureResource(resource => resource.AddService(builder.Environment.ApplicationName))
             .WithMetrics(metrics => 
                 metrics.AddAspNetCoreInstrumentation()
                        .AddMeter("Microsoft.AspNetCore.Hosting")
-                       .AddMeter("Microsoft.AspNetCore.Server.Kestrel"))
+                       .AddMeter("Microsoft.AspNetCore.Server.Kestrel")
+                       .AddMeter("MyUglyChat"))
             .WithTracing(tracing =>
                 tracing.AddAspNetCoreInstrumentation()
                        .AddConsoleExporter()

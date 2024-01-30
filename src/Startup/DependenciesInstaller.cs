@@ -10,5 +10,6 @@ public static class DependenciesInstaller
         services.AddSingleton<ContactsService>();
         services.AddSingleton<ChatArchiveService>();
         services.AddSingleton<RecentChatsService>();
+        services.AddSingleton<MetricsService>();
     }
 }
